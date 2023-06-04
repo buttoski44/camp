@@ -1,20 +1,22 @@
 import React from "react";
-
+import { Routes, Route } from "react-router-dom";
+import { Navbar } from "./component/navbar/navbar";
+import { Home } from "./routes/home/home";
+import { Campground } from "./routes/campground/campground";
+import { Campgrounds } from "./routes/campgrounds/campgrounds";
+import { NewCampground } from "./routes/new-campground/new-campground";
+import { Edit } from "./routes/edit/edit";
 function App() {
-  const [data, setData] = React.useState(null);
-  console.log(data);
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-
   return (
-    <div className="App">
-      <header className="">
-        <p className="text-[#616060]">{!data ? "Loading..." : data}</p>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navbar />}>
+        <Route index element={<Home />} />
+        <Route path="/campgrounds" element={<Campgrounds />} />
+        <Route path="/campgrounds/new" element={<NewCampground />} />
+        <Route path="/campgrounds/:id" element={<Campground />} />
+        <Route path="/campgrounds/:id/edit" element={<Edit />} />
+      </Route>
+    </Routes>
   );
 }
 
