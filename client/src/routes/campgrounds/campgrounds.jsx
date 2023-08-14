@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+//bug
+// 1. every card does not get unique image
 export const Campgrounds = () => {
   const [campgrounds, setCampgrounds] = useState([]);
   const [error, setError] = useState(false);
@@ -15,16 +17,24 @@ export const Campgrounds = () => {
 
   const onclickHanlder = async (id) => {
     const res = await axios.delete(`/api/campgrounds/${id}`);
-    setError(res.data.message);
-    if (error) {
+    setError(!res.data.success);
+    if (!error) {
       const newCampgrounds = campgrounds.filter((camp) => camp._id !== id);
       setCampgrounds(newCampgrounds);
     }
   };
+
   return (
     <section className="container my-5">
       <h1 className="h1 py-3">All Campgrounds</h1>
-      {error && <span>Error!</span>}
+      {error && (
+        <span
+          className="alert alert-danger d-flex align-items-center py-3 "
+          role="alert"
+        >
+          Error!
+        </span>
+      )}
       <div className="">
         {campgrounds.map((camp) => (
           <div className="card mb-3" key={camp._id}>

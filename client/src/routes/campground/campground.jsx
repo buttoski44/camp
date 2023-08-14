@@ -1,23 +1,29 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
+import { Error } from "../../component/error/error";
 import axios from "axios";
+
 export const Campground = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [campground, setCampground] = useState({});
   useEffect(() => {
-    const apiRequest = async () => {
-      const res = await axios.get(`/api/campgrounds/${id}`);
-      setCampground(res.data);
-    };
+    try {
+      const apiRequest = async () => {
+        const res = await axios.get(`/api/campgrounds/${id}`);
+        setCampground(res.data);
+      };
+      apiRequest();
+    } catch (error) {
+      return <Error message={error.message} />
+    }
 
-    apiRequest();
   }, []);
 
   const onclickHanlder = async (id) => {
     const res = await axios.delete(`/api/campgrounds/${id}`);
-    if (res.data.message) {
+    if (res.data.success) {
       navigate("/campgrounds");
     }
   };
@@ -27,7 +33,7 @@ export const Campground = () => {
       <div className="row">
         <div className="col-6 offset-3">
           <div className="card">
-            <img src={campground.image} class="card-img-top" alt="" />
+            <img className="card-img-top" src={campground.image} alt="" />
             <div className="card-body">
               <h5 className="card-title">{campground.title}</h5>
               <p className="card-text">{campground.description}</p>

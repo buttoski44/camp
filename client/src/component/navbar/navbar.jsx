@@ -9,9 +9,9 @@ export const Navbar = () => {
         data-bs-theme="dark"
       >
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <Link className="navbar-brand" to="/">
             Camp
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
